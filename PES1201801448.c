@@ -1,17 +1,7 @@
 #include"intal.h"
 #include<stdlib.h>
-
-int strlenBullbabaPikaPika(char *str)
-{
-    int len = 0;
-    char *temp = str;
-    while (*(temp++))
-    {
-        len++;
-    }
-    return len;
-    
-}
+#include<string.h>
+#include<stdio.h>
 
 char *intal_add(char *intal1, char *intal2)
 {
@@ -29,8 +19,8 @@ char *intal_add(char *intal1, char *intal2)
     Then copy from the biggerintal as it
     Remove the trailing zeros
     */
-    int len1 = strlenBullbabaPikaPika(intal1);
-    int len2 = strlenBullbabaPikaPika(intal2);
+    int len1 = strlen(intal1);
+    int len2 = strlen(intal2);
     // The length of the bigger intal
     int bigLen = len1 > len2 ? len1 : len2;
     int smallLen = len1 > len2 ? len2 : len1;
@@ -84,7 +74,15 @@ char *intal_add(char *intal1, char *intal2)
             resultIndex--;
         }
     }
-    return result + 1;
+    // To return a valid freeable pointer
+    char *result2 = (char *)malloc(sizeof(int) * bigLen);
+    for (int i = 1; i <= bigLen; i++)
+    {
+        result2[i - 1] = result[i];
+    }
+    free(result);
+    return result2;
+    
 }
 
 int intal_compare(char *intal1, char *intal2)
@@ -113,7 +111,18 @@ char* intal_gcd(char* intal1, char* intal2)
 }
 char* intal_fibonacci(unsigned int n)
 {
-    return 0;
+    char *first = "0";
+    char *second = "1";
+    if (n == 0)
+    {
+        return first;
+    }
+    if (n == 1)
+    {
+        return second;
+    }
+    return '1';
+    
 }
 char* intal_factorial(unsigned int n)
 {
