@@ -31,26 +31,73 @@ int main(int argc, char const *argv[]) {
 		printf("Test intal_add FAILED.\n");
 	} else {
 		if(0 == strcmp(result1, "543216666666666666666666666666")) {
-			printf("Test intal_add PASSED\n");
+			printf("Generic Case : Test intal_add PASSED\n");
 		} else {
-			printf("Test intal_add FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "543216666666666666666666666666");
+			printf("Generic Case : Test intal_add FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "543216666666666666666666666666");
 		}
 		free(result1);
 	}
 
+	result1 = intal_add("9999", "9999");
+	if(!result1) {
+		printf("Test intal_add FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "19998")) {
+			printf("New digit : Test intal_add PASSED\n");
+		} else {
+			printf("New digit : Test intal_add FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "19998");
+		}
+		free(result1);
+	}
+
+	result1 = intal_add("2346", "0");
+	if(!result1) {
+		printf("Test intal_add FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "2346")) {
+			printf("Zero + number : Test intal_add PASSED\n");
+		} else {
+			printf("Zero + number : Test intal_add FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "2346");
+		}
+		free(result1);
+	}
+
+	result1 = intal_add("0", "0");
+	if(!result1) {
+		printf("Test intal_add FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "0")) {
+			printf("Zero + Zero : Test intal_add PASSED\n");
+		} else {
+			printf("Zero + Zero : Test intal_add FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "0");
+		}
+		free(result1);
+	}
+
+	printf("\n");
+
+	index1 = intal_compare(a[1], a[0]);
+	if(1 == index1) {
+		printf("First number greater : Test intal_compare PASSED\n");
+	} else {
+		printf("First number greater : Test intal_compare FAILED.\nYour answer: %d\nExpected answer: %d\n", index1, -1);
+	}
+
 	index1 = intal_compare(a[0], a[1]);
 	if(-1 == index1) {
-		printf("Test intal_compare PASSED\n");
+		printf("Second number greater : Test intal_compare PASSED\n");
 	} else {
-		printf("Test intal_compare FAILED.\nYour answer: %d\nExpected answer: %d\n", index1, -1);
+		printf("Second number greater : Test intal_compare FAILED.\nYour answer: %d\nExpected answer: %d\n", index1, -1);
 	}
 
 	index1 = intal_compare(a[0], a[3]);
 	if(0 == index1) {
-		printf("Test intal_compare PASSED\n");
+		printf("Equal numbers : Test intal_compare PASSED\n");
 	} else {
-		printf("Test intal_compare FAILED.\nYour answer: %d\nExpected answer: %d\n", index1, 0);
+		printf("Equal numbers : Test intal_compare FAILED.\nYour answer: %d\nExpected answer: %d\n", index1, 0);
 	}
+
+	printf("\n");
 
 	result1 = intal_diff(a[0], a[1]);
 	if(!result1) {
