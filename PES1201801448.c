@@ -28,64 +28,127 @@ char* intal_add(const char *intal1, const char *intal2)
     const char* bigintal = len1 > len2 ? intal1 : intal2;
     const char* smallintal = len1 > len2 ? intal2 : intal1;
     // The answer
-    char *result = (char *)malloc(sizeof(char) * (bigLen + 2));
-    int resultIndex = bigLen; // Last index of answer exclude \0
-    // Variables for step by step addition
+    char *result = (char *)malloc(sizeof(char) * (bigLen + 1));
+    result[bigLen] = '\0';
+    int resultIndex = bigLen - 1;
     int carry = 0;
-    int digitTotal;
-    int digit1;
-    int digit2;
-    for (int i = smallLen - 1; i >= 0; i--)
+    int smlIndex = smallLen - 1;
+    while (smlIndex > -1)
     {
-        digit1 = smallintal[i] - 48;
-        digit2 = bigintal[resultIndex - 1] - 48;
-        digitTotal = digit1 + digit2 + carry;
-        carry = digitTotal >= 10 ? 1 : 0;
-        // Converting to interger by adding ascii value of 0
-        result[resultIndex--] = (digitTotal % 10) + 48;
-    }
-    while (resultIndex > 0 && carry == 1) //Until carry is cleared
-    {
-        // Result index remains > 0 as long as 
-        digitTotal = bigintal[resultIndex - 1] - 48 + carry;
-        carry = digitTotal >= 10 ? 1 : 0;
-
-        result[resultIndex] = carry + bigintal[(resultIndex) - 1] + 48;
+        result[resultIndex] = bigintal[resultIndex] - 48
+            + smallintal[smlIndex] - 48 + carry;
+        carry = result[resultIndex] >= 10 ? 1 : 0;
+        result[resultIndex] = (result[resultIndex] % 10) + 48;
         resultIndex--;
+        smlIndex--;
     }
-
-    /*
-    Scenario 1
-    There is no carry into last place no trailing digit
-    Scenario 2 
-    Make the last digit 1 if there is carry at the end
-    */
-
-    if (carry == 1 && resultIndex == 0)
+    if (resultIndex == -1 && carry == 0)
     {
-        result[0] = 49;
-        result[bigLen + 1] = '\0';
         return result;
     }
-    else if (carry == 0)
+    else if (resultIndex == -1 && carry == 1)
     {
-        while (resultIndex > 0)
+        char *newRes = (char *)malloc(sizeof(char) * (bigLen + 2));
+        newRes[bigLen + 1] = '\0';
+        newRes[0] = 1 + 48;
+        for (int i = 0; i < bigLen; i++)
         {
-            result[resultIndex] = bigintal[(resultIndex) - 1];
+            newRes[i + 1] = result[i];
+        }
+        free(result);
+        return newRes;   
+    }
+    else
+    {
+        //Scenario where bigIntal has more digits
+        while (resultIndex > -1)
+        {
+            result[resultIndex] = carry + bigintal[resultIndex] - 48;
+            carry = result[resultIndex] >= 10 ? 1 : 0;
+            result[resultIndex] = (result[resultIndex] % 10 ) + 48;
             resultIndex--;
         }
+        if (carry == 0)
+        {
+            return result;
+        }
+
+        char *newRes = (char *)malloc(sizeof(char) * (bigLen + 2));
+        newRes[bigLen + 1] = '\0';
+        newRes[0] = 1;
+        for (int i = 0; i < bigLen; i++)
+        {
+            newRes[i + 1] = result[i];
+        }
+        free(result);
+        return newRes;
+    
     }
-    // To return a valid freeable pointer
-    char *result2 = (char *)malloc(sizeof(int) * (bigLen + 1));
-    for (int i = 1; i <= bigLen; i++)
-    {
-        result2[i - 1] = result[i];
-    }
-    result2[bigLen] = '\0';
-    free(result);
-    return result2;
+    
+    
+    
+    
+    
+    // char *result = (char *)malloc(sizeof(char) * (bigLen + 2));
+    // int resultIndex = bigLen; // Last index of answer exclude \0
+    // // Variables for step by step addition
+    // int carry = 0;
+    // int digitTotal;
+    // int digit1;
+    // int digit2;
+    // for (int i = smallLen - 1; i >= 0; i--)
+    // {
+    //     digit1 = smallintal[i] - 48;
+    //     digit2 = bigintal[resultIndex - 1] - 48;
+    //     digitTotal = digit1 + digit2 + carry;
+    //     carry = digitTotal >= 10 ? 1 : 0;
+    //     // Converting to interger by adding ascii value of 0
+    //     result[resultIndex--] = (digitTotal % 10) + 48;
+    // }
+    
+    // while (resultIndex > 0 && carry == 1) //Until carry is cleared
+    // {
+    //     // Result index remains > 0 as long as 
+    //     digitTotal = bigintal[resultIndex] - 48 + carry;
+    //     carry = digitTotal >= 10 ? 1 : 0;
+
+    //     result[resultIndex] = carry + bigintal[(resultIndex) - 1] + 48;
+    //     resultIndex--;
+    // }
+
+    // /*
+    // Scenario 1
+    // There is no carry into last place no trailing digit
+    // Scenario 2 
+    // Make the last digit 1 if there is carry at the end
+    // */
+
+    // if (carry == 1 && resultIndex == 0)
+    // {
+    //     result[0] = 49;
+    //     result[bigLen + 1] = '\0';
+    //     return result;
+    // }
+    // else if (carry == 0)
+    // {
+    //     while (resultIndex > 0)
+    //     {
+    //         result[resultIndex] = bigintal[(resultIndex) - 1];
+    //         resultIndex--;
+    //     }
+    // }
+    // // To return a valid freeable pointer
+    // char *result2 = (char *)malloc(sizeof(int) * (bigLen + 1));
+    // for (int i = 1; i <= bigLen; i++)
+    // {
+    //     result2[i - 1] = result[i];
+    // }
+    // result2[bigLen] = '\0';
+    // free(result);
+    // return result2;
     
 }
+
 
 int intal_compare(const char *intal1, const char *intal2)
 {
@@ -130,7 +193,7 @@ int intal_compare(const char *intal1, const char *intal2)
 }
 
 
-char* intal_diff(const char *intal1, const char *intal2)
+char* intal_diff(const char *intal1, const char *intal2)    
 {
     /*
     Find the larger and smaller number
@@ -242,10 +305,152 @@ char* intal_diff(const char *intal1, const char *intal2)
     return finalRes;
 
 }
+
+
+
+char *dummyMultPikaBullbaba42(const int *intal1, int bigIntalLen, const int mult, int numEndZeros)
+{
+    // This gets an integer array of the digits
+    // Design decision to make the partial product one longer than bigIntal
+    // Excluding the zeros  to ba added
+    for (int i = 0; i < bigIntalLen; i++)
+    {
+        printf("%d", intal1[i]);
+    }
+    for (int i = 0; i < numEndZeros; i++)
+    {
+        printf("%d", 0);
+    }
+    
+    printf(" x %d = ", mult);
+
+    
+    if (mult == 0)
+    {
+        char *hardCode = (char *)malloc(sizeof(char) * 2);
+        hardCode[0] = '0';
+        hardCode[1] = '\0';
+        return hardCode;
+    }
+    
+    char *result = (char *)malloc(sizeof(char) * (bigIntalLen + 2
+        + numEndZeros));
+    result[bigIntalLen + 1 + numEndZeros] = '\0';
+    int resIndex = bigIntalLen + numEndZeros;
+    // Adding the zeros in the end;
+    for (int i = 0; i < numEndZeros; i++)
+    {
+        result[resIndex] = 48;
+        resIndex--;
+    }
+
+    int carry = 0;
+
+    for (int i = 0; i < bigIntalLen; i++)
+    {
+        result[resIndex] = (intal1[resIndex - 1] * mult) + carry;
+        carry = result[resIndex] / 10;
+        result[resIndex] =  (result[resIndex] % 10) + 48;
+        resIndex--;
+    }
+
+    // for (int i = 0; i < bigIntalLen + numEndZeros; i++)
+    // {
+    //     printf("%c", result[i]);
+    // }
+    // printf("\n");
+    
+
+    if (carry)
+    {
+        result[0] = carry + 48;
+        return result;
+    }
+    char *newRes = (char *)malloc(sizeof(char) * (bigIntalLen + 1 + numEndZeros));
+    newRes[bigIntalLen + numEndZeros] = '\0';
+    for (int i = 0; i < bigIntalLen + numEndZeros; i++)
+    {
+        newRes[i] = result[i + 1];
+    }
+    free(result);
+    // printf("%s\n", newRes);
+    return newRes;
+    
+
+    
+    
+
+}
+
+
 char* intal_multiply(const char *intal1, const char *intal2)
 {
-    return 0;
+    /*
+    Find the bigger number
+    Convert it into an integer array (subtract 48)
+    Create a char array which keeps track of the sum
+    Initialise it to the first partial product (using intal_add)
+    Iterate over the rest of the smaller number
+        Write a function with an unpredictable name for the partial product
+            Allocate memory for char array for the result
+            This char array will be 1 longer than the bigIntal
+            Assuming uniform distribution of input numbers
+            Addition of a digit other than the zeros to the partial product
+            Is far more likely than not
+            Dummy function will take the big intal in integer array form
+            the digit to multiply to it also as an interger
+            And the number of zeros to be appended to it
+            Finds one partial product and returns a new char array
+
+        Find cumulative sum of parital product
+        Free the sum pointer every iteration
+        Free the integer array of the "bigger number"
+        Add function takes care of the number of digits
+
+    */
+    
+    int len1 = strlen(intal1);
+    int len2 = strlen(intal2);
+    // The length of the bigger intal
+    int bigLen = len1 > len2 ? len1 : len2;
+    int smallLen = len1 > len2 ? len2 : len1;
+    // The intals with big and small determined
+    const char* bigintal = len1 > len2 ? intal1 : intal2;
+    const char* smallintal = len1 > len2 ? intal2 : intal1;
+
+    int* bigIntalNum = (int *)malloc(sizeof(int) * (bigLen));
+    for (int i = 0; i < bigLen; i++)
+    {
+        bigIntalNum[i] = bigintal[i] - 48;
+        // printf("%d", bigIntalNum[i]);
+    }
+    // printf("\n");
+    
+    char *sum = dummyMultPikaBullbaba42(bigIntalNum, bigLen
+        , smallintal[smallLen - 1] - 48, 0);
+    printf("%s\n", sum);
+    char *newSum;
+    char *pp;
+    int zeroCount = 1;
+    for (int i = smallLen - 2; i > -1; i--)
+    {
+        pp = dummyMultPikaBullbaba42(bigIntalNum, bigLen, 
+            smallintal[i] - 48, zeroCount);
+        printf("%s\n", pp);
+        newSum = intal_add(pp, sum);
+        printf("Sum So far : %s\n", newSum);
+        free(pp);
+        free(sum);
+        sum = newSum;
+        zeroCount++;
+    } 
+    free(bigIntalNum);  
+    return sum;
+    
+    
 }
+
+
 char* intal_mod(const char *intal1, const char *intal2)
 {
     return 0;
@@ -260,20 +465,18 @@ char* intal_gcd(const char *intal1, const char *intal2)
 }
 char* intal_fibonacci(unsigned int n)
 {
-    return 0;
-    // REMOVE THIS LATER
     char *first = (char *)malloc(sizeof(char) * 2);
-    first[1] = '\n';
+    first[1] = '\0';
     first[0] = '0';
     char *second = (char *)malloc(sizeof(char) * 2);
-    second[1] = '\n';
+    second[1] = '\0';
     second[0] = '1';
 
-    if (n == 1)
+    if (n == 0)
     {
         return first;
     }
-    if (n == 2)
+    if (n == 1)
     {
         return second;
     }
@@ -285,15 +488,16 @@ char* intal_fibonacci(unsigned int n)
     Make the old second into first
     Make the sum as second and repeat
     */
-    for (int i = 3; i < n + 1; i++)
+    for (int i = 2; i < n + 1; i++)
     {
         char *sum = intal_add(first, second);
         free(first);
+        // printf("%s\n", sum);
         first = second;
         second = sum;
     }
+    free(first);
     return second;
-    
     
 }
 char* intal_factorial(unsigned int n)

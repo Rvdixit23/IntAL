@@ -50,6 +50,30 @@ int main(int argc, char const *argv[]) {
 		free(result1);
 	}
 
+	result1 = intal_add("13", "8");
+	if(!result1) {
+		printf("Test intal_add FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "21")) {
+			printf("Carry without : Test intal_add PASSED\n");
+		} else {
+			printf("Carry without : Test intal_add FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "21");
+		}
+		free(result1);
+	}
+
+	result1 = intal_add("897", "8");
+	if(!result1) {
+		printf("Test intal_add FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "905")) {
+			printf("Losing carry Last digit : Test intal_add PASSED\n");
+		} else {
+			printf("Losing carry Last digit : Test intal_add FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "905");
+		}
+		free(result1);
+	}
+
 	result1 = intal_add("2346", "0");
 	if(!result1) {
 		printf("Test intal_add FAILED.\n");
@@ -161,17 +185,61 @@ int main(int argc, char const *argv[]) {
 		free(result1);
 	}
 
-	// result1 = intal_multiply(a[8], a[5]);
-	// if(!result1) {
-	// 	printf("Test intal_multiply FAILED.\n");
-	// } else {
-	// 	if(0 == strcmp(result1, "65185851858518585185851852")) {
-	// 		printf("Test intal_multiply PASSED\n");
-	// 	} else {
-	// 		printf("Test intal_multiply FAILED.\n.Your answer: %s\nExpected answer: %s\n", result1, "65185851858518585185851852");
-	// 	}
-	// 	free(result1);
-	// }
+	printf("\n");
+
+	result1 = intal_multiply(a[8], a[5]);
+	if(!result1) {
+		printf("Test intal_multiply FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "65185851858518585185851852")) {
+			printf("Generic Case : Test intal_multiply PASSED\n");
+		} else {
+			printf("Generic Case : Test intal_multiply FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "65185851858518585185851852");
+		}
+		free(result1);
+	}
+
+
+	//Zero mult
+	result1 = intal_multiply("0", "696969");
+	if(!result1) {
+		printf("Test intal_multiply FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "0")) {
+			printf("Multiply by 0 : Test intal_multiply PASSED\n");
+		} else {
+			printf("Multiply by 0 : Test intal_multiply FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "0");
+		}
+		free(result1);
+	}
+
+	//Squaring
+	result1 = intal_multiply("999", "999");
+	if(!result1) {
+		printf("Test intal_multiply FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "998001")) {
+			printf("Squaring a number : Test intal_multiply PASSED\n");
+		} else {
+			printf("Squaring a number : Test intal_multiply FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "998001");
+		}
+		free(result1);
+	}
+
+	// Multiple zeros in one number
+	result1 = intal_multiply("897649235", "10001010");
+	if(!result1) {
+		printf("Test intal_multiply FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "8977398975727350")) {
+			printf("Many zeros in a number : Test intal_multiply PASSED\n");
+		} else {
+			printf("Many zeros in a number : Test intal_multiply FAILED.\nYour answer:     %s\nExpected answer: %s\n", result1, "8977398975727350");
+		}
+		free(result1);
+	}
+
+	printf("\n");
 
 	// result1 = intal_mod(a[3], a[4]);
 	// if(!result1) {
@@ -257,29 +325,29 @@ int main(int argc, char const *argv[]) {
 	// 	free(result1);
 	// }
 
-	// result1 = intal_fibonacci(3);
-	// if(!result1) {
-	// 	printf("Test intal_fibonacci FAILED.\n");
-	// } else {
-	// 	if(0 == strcmp(result1, "2")) {
-	// 		printf("Test intal_fibonacci PASSED\n");
-	// 	} else {
-	// 		printf("Test intal_fibonacci FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "2");
-	// 	}
-	// 	free(result1);
-	// }
+	result1 = intal_fibonacci(3);
+	if(!result1) {
+		printf("Test intal_fibonacci FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "2")) {
+			printf("Test intal_fibonacci PASSED\n");
+		} else {
+			printf("Test intal_fibonacci FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "2");
+		}
+		free(result1);
+	}
 
-	// result1 = intal_fibonacci(1000);
-	// if(!result1) {
-	// 	printf("Test intal_fibonacci FAILED.\n");
-	// } else {
-	// 	if(0 == strcmp(result1, "43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875")) {
-	// 		printf("Test intal_fibonacci PASSED\n");
-	// 	} else {
-	// 		printf("Test intal_fibonacci FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875");
-	// 	}
-	// 	free(result1);
-	// }
+	result1 = intal_fibonacci(1000);
+	if(!result1) {
+		printf("Test intal_fibonacci FAILED.\n");
+	} else {
+		if(0 == strcmp(result1, "43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875")) {
+			printf("Test intal_fibonacci PASSED\n");
+		} else {
+			printf("Test intal_fibonacci FAILED.\nYour answer: %s\nExpected answer: %s\n", result1, "43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875");
+		}
+		free(result1);
+	}
 
 	// result1 = intal_factorial(30);
 	// if(!result1) {
