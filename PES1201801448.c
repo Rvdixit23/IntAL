@@ -461,7 +461,23 @@ char* intal_pow(const char* intal1, unsigned int n)
 }
 char* intal_gcd(const char *intal1, const char *intal2)
 {
-    return 0;
+  if (intal1[0] == 48 && intal2[0] == 48)
+  {
+    char *r = malloc(sizeof(char) * 2);
+    r[1] = '\0';
+    r[0] = 48;
+    return r;
+  }
+
+  if (intal2[0] == 48)
+  {
+    return intal1;
+  }
+
+  else
+  {
+    return intal_gcd(intal2, intal_mod(intal1, intal2));
+  }
 }
 char* intal_fibonacci(unsigned int n)
 {
@@ -506,7 +522,40 @@ char* intal_factorial(unsigned int n)
 }
 char* intal_bincoeff(unsigned int n, unsigned int k)
 {
-    return 0;
+    
+
+  char **c = (char **)malloc((k + 1) * sizeof(char *));
+  for (int i = 0; i < k + 1; ++i)
+  {
+    c[i] = (char *)malloc(2 * sizeof(char));
+    c[i][0] = '0';
+    c[i][1] = '\0';
+  }
+
+  c[0][0] = '1';
+
+  for (int i = 1; i < n + 1; ++i)
+  {
+    int j = (i > k) ? k : i;
+    while (j > 0)
+    {
+      char *tmp = c[j];
+      c[j] = intal_add(c[j], c[j - 1]);
+      free(tmp);
+      --j;
+    }
+  }
+
+  char *result = (char *)malloc((strlen(c[k]) + 1) * sizeof(char));
+  strcpy(result, c[k]);
+
+  for (int i = 0; i < k + 1; ++i)
+  {
+    free(c[i]);
+  }
+  free(c);
+
+  return result;
 }
 int intal_max(char **arr, int n)
 {
